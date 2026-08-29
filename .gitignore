@@ -1,0 +1,13 @@
+# Secrets - nunca versionar
+.env
+*.env
+!.env.example
+
+# Datos de las apps - son volúmenes, no config
+**/data/
+**/letsencrypt/
+
+# Por si acaso
+*.key
+*.pem
+*.sqlite3
