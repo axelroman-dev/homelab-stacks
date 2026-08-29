@@ -1,0 +1,23 @@
+services:
+  vaultwarden:
+    image: vaultwarden/server:1.37.2
+    container_name: vaultwarden
+    restart: unless-stopped
+    environment:
+      - DOMAIN=https://vaultwarden.${DOMAIN}
+      - SIGNUPS_ALLOWED=true        # después de crear tu cuenta, cerrá registros
+      - WEBSOCKET_ENABLED=true
+      - ADMIN_TOKEN=${ADMIN_TOKEN}
+    volumes:
+      - ./data:/data
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.vaultwarden.rule=Host(`vaultwarden.${DOMAIN}`)"
+      - "traefik.http.routers.vaultwarden.entrypoints=web"
+      - "traefik.http.services.vaultwarden.loadbalancer.server.port=80"
+
+networks:
+  proxy:
+    external: true
