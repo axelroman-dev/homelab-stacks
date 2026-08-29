@@ -1,0 +1,50 @@
+services:
+  db:
+    image: mariadb:10.11
+    container_name: seafile-db
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - MYSQL_LOG_CONSOLE=true
+    volumes:
+      - ./data/db:/var/lib/mysql
+    networks:
+      - seafile-internal
+
+  memcached:
+    image: memcached:1.6
+    container_name: seafile-memcached
+    restart: unless-stopped
+    entrypoint: memcached -m 256
+    networks:
+      - seafile-internal
+
+  seafile:
+    image: seafileltd/seafile-mc:11.0-latest
+    container_name: seafile
+    restart: unless-stopped
+    depends_on:
+      - db
+      - memcached
+    environment:
+      - DB_HOST=db
+      - DB_ROOT_PASSWD=${DB_ROOT_PASSWORD}
+      - TIME_ZONE=America/Mexico_City
+      - SEAFILE_ADMIN_EMAIL=${ADMIN_EMAIL}
+      - SEAFILE_ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - SEAFILE_SERVER_HOSTNAME=seafile.${DOMAIN}
+    volumes:
+      - ./data/seafile:/shared
+    networks:
+      - seafile-internal
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.seafile.rule=Host(`seafile.${DOMAIN}`)"
+      - "traefik.http.routers.seafile.entrypoints=web"
+      - "traefik.http.services.seafile.loadbalancer.server.port=80"
+
+networks:
+  seafile-internal:
+  proxy:
+    external: true
