@@ -1,0 +1,21 @@
+services:
+  forgejo:
+    image: codeberg.org/forgejo/forgejo:9
+    container_name: forgejo
+    restart: unless-stopped
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+      - FORGEJO__server__ROOT_URL=https://git.${DOMAIN}
+      - FORGEJO__server__SSH_DOMAIN=git.${DOMAIN}
+      - FORGEJO__server__SSH_PORT=2222
+    volumes:
+      - ./data:/data
+    ports:
+      - 2222:22 # para clonar/pushear vía SSH (git@git.tudominio.com)
+      - 3002:3000
+    networks:
+      - proxy
+networks:
+  proxy:
+    external: true
