@@ -18,12 +18,6 @@ services:
     networks:
       - immich-internal
       - proxy
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.immich.rule=Host(`immich.${DOMAIN}`)"
-      - "traefik.http.routers.immich.entrypoints=web"
-      - "traefik.http.services.immich.loadbalancer.server.port=2283"
-
   immich-machine-learning:
     image: ghcr.io/immich-app/immich-machine-learning:v3.1.0
     container_name: immich-ml
@@ -32,14 +26,12 @@ services:
       - ./data/model-cache:/cache
     networks:
       - immich-internal
-
   immich-redis:
     image: redis:6.2-alpine
     container_name: immich-redis
     restart: unless-stopped
     networks:
       - immich-internal
-
   immich-postgres:
     image: ghcr.io/immich-app/postgres:14-vectorchord0.3.0
     container_name: immich-postgres
@@ -52,8 +44,7 @@ services:
       - ./data/postgres:/var/lib/postgresql/data
     networks:
       - immich-internal
-
 networks:
-  immich-internal:
+  immich-internal: null
   proxy:
     external: true

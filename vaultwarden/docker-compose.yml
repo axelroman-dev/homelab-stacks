@@ -12,11 +12,6 @@ services:
       - ./data:/data
     networks:
       - proxy
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.vaultwarden.rule=Host(`vaultwarden.${DOMAIN}`)
-      - traefik.http.routers.vaultwarden.entrypoints=web
-      - traefik.http.services.vaultwarden.loadbalancer.server.port=80
 networks:
   proxy:
     external: true
