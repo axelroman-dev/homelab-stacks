@@ -1,0 +1,20 @@
+services:
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: nginx
+    restart: unless-stopped
+    environment:
+      - DOMAIN=${DOMAIN}
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./templates:/etc/nginx/templates:ro
+      - ./entrypoint.sh:/entrypoint.sh:ro
+    ports:
+      - "8080:80"
+    networks:
+      - proxy
+    entrypoint: ["/bin/sh", "/entrypoint.sh"]
+
+networks:
+  proxy:
+    external: true
