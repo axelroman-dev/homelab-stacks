@@ -1,6 +1,6 @@
 server {
     listen 80;
-    server_name browsersync.${DOMAIN};
+    server_name browsersync.axelroman.dev;
 
     location / {
         proxy_pass http://browsersync:3000;

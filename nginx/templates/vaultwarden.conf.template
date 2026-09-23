@@ -1,6 +1,6 @@
 server {
     listen 80;
-    server_name vaultwarden.${DOMAIN};
+    server_name vaultwarden.axelroman.link;
 
     location / {
         proxy_pass http://vaultwarden:80;

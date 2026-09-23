@@ -1,6 +1,6 @@
 server {
     listen 80;
-    server_name immich.${DOMAIN};
+    server_name immich.axelroman.link;
     client_max_body_size 50000M;
 
     location / {

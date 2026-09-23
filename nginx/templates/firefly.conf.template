@@ -1,6 +1,6 @@
 server {
     listen 80;
-    server_name firefly.${DOMAIN};
+    server_name firefly.axelroman.link;
 
     location / {
         proxy_pass http://firefly:8080;

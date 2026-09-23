@@ -1,6 +1,6 @@
 server {
     listen 80;
-    server_name uptimekuma.${DOMAIN};
+    server_name uptimekuma.axelroman.link;
 
     location / {
         proxy_pass http://uptime-kuma:3001;
