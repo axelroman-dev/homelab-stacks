@@ -2,8 +2,11 @@ server {
     listen 80;
     server_name finanzas.axelroman.link;
 
+    resolver 127.0.0.11 valid=10s ipv6=off;
+    set $upstream http://finanzas-app:3000;
+
     location / {
-        proxy_pass http://finanzas-app:3000;
+        proxy_pass $upstream;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;

@@ -2,8 +2,11 @@ server {
     listen 80;
     server_name browsersync.axelroman.dev;
 
+    resolver 127.0.0.11 valid=10s ipv6=off;
+    set $upstream http://browsersync:3000;
+
     location / {
-        proxy_pass http://browsersync:3000;
+        proxy_pass $upstream;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
