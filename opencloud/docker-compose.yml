@@ -1,0 +1,23 @@
+services:
+  opencloud:
+    image: opencloudeu/opencloud:7.2.0
+    container_name: opencloud
+    restart: unless-stopped
+    entrypoint: ["/bin/sh"]
+    command: ["-c", "opencloud init || true; opencloud server"]
+    environment:
+      OC_URL: ${OC_URL}
+      PROXY_TLS: "false"
+      PROXY_HTTP_ADDR: 0.0.0.0:9200
+      OC_INSECURE: "false"
+      IDM_ADMIN_PASSWORD: ${OC_ADMIN_PASSWORD}
+      OC_LOG_LEVEL: warn
+    volumes:
+      - ./config:/etc/opencloud
+      - ./data:/var/lib/opencloud
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
